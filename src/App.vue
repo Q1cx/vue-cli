@@ -1,15 +1,14 @@
 <template>
   <div id="app">
-    '12345' 跟组建
-    <el-button type="danger">危险按钮</el-button>
+    <!-- 一级路由渲染的位置 -->
+    <router-view></router-view>
   </div>
 </template>
 
 <script>
 
-
 export default {
-  name: 'app',
+  name: 'app'
 
 }
 </script>
