@@ -3,12 +3,13 @@
     <!-- 卡片 -->
     <el-card class="login_box">
       <img src="../../assets/images/logo_index.png" alt="">
-      <el-form>
-        <el-form-item>
-          <el-input placeholder="请输入手机号"></el-input>
+      <!-- 表单 -->
+      <el-form status-icon ref='loginForm' :model="loginForm" :rules="loginRules">
+        <el-form-item prop="mobile">
+          <el-input v-model="loginForm.mobile" placeholder="请输入手机号"></el-input>
         </el-form-item>
-        <el-form-item>
-            <el-input placeholder="请输入验证码" style="width:280px"></el-input>
+        <el-form-item prop="code">
+            <el-input v-model="loginForm.code" placeholder="请输入验证码" style="width:280px"></el-input>
             <el-button style="float:right">发送验证吗</el-button>
         </el-form-item>
         <el-form-item>
@@ -16,7 +17,7 @@
             我已阅读并同意 <el-link type="primary">用户协议</el-link> 和 <el-link type="primary">隐私协议</el-link>
         </el-form-item>
         <el-form-item>
-            <el-button type='primary' style="width:100%">登陆</el-button>
+            <el-button style="width:100%" type='primary'  @click="login()">登陆</el-button>
         </el-form-item>
       </el-form>
     </el-card>
@@ -25,8 +26,62 @@
 <script>
 export default {
   data () {
+    // 检验手机号码
+    const checkMobile = (rule, value, callback) => {
+      // 检验逻辑
+      if (/^1[3-9]\d{9}$/.test(value)) {
+        callback()
+      } else {
+        callback(new Error('号码格式不正确'))
+      }
+    }
     return {
+      // 对应表单数据
+      loginForm: {
+        mobile: '',
+        code: ''
+      },
+      // 表单校验规则对象
+      loginRules: {
+        mobile: [
+          // 具体的校验规则  比如长度  是否必填  格式等
+          { required: true, message: '手机号为必填项', trigger: 'blur' },
+          { validator: checkMobile, trigger: 'blur' }
+
+        ],
+        code: [
+          { required: true, message: '请输入正确的验证码', trigger: 'blur' },
+          { len: 6, message: '验证码必须是6位', trigger: 'blur' }
+
+        ]
+      },
+      // 默认选中复选框
       checked: true
+    }
+  },
+  methods: {
+    // 整体表单的校验
+    login () {
+      this.$refs.loginForm.validate((valid) => {
+        if (valid) {
+          // 如果检验成功，进行登陆
+          this.axios.post('http://ttapi.research.itcast.cn/mp/v1_0/authorizations', this.loginForm)
+            .then(res => {
+            // res是相应对象   不是相应数据
+              const data = res.data
+              // 后台的返回的json内容   已经互赞换成了对象
+              console.log(data.token)
+              // 登录后要做的事情
+              // 1、跳转到首页
+              // 2、保持登录状态
+              this.$router.push('/')
+            })
+            .catch(err => {
+              // 错误提示  消息组件提示
+              this.$message.error('用户名或密码错误')
+            })
+        }
+      })
     }
   }
 }
