@@ -1,13 +1,15 @@
 <template>
   <el-container class="home-container">
-    <el-aside class="my-aside" width="200px">
-      <div class="logo"></div>
+    <el-aside class="my-aside" :width="collapse?'64px':'200px'">
+      <div class="logo" :class="{close:collapse}"></div>
       <el-menu
         default-active="1"
         background-color="#002033"
         text-color="#fff"
         active-text-color="#ffd04b"
         style="border-right:none"
+        :collapse="collapse"
+        :collapse-transition='false'
       >
         <el-menu-item index="1">
           <i class="el-icon-s-home"></i>
@@ -42,7 +44,7 @@
 
     <el-container>
       <el-header class="my-header">
-        <span class="el-icon-s-fold"></span>
+        <span class="el-icon-s-fold" @click="toggleMenu()"></span>
         <span class="text">江苏传智播客教育科技有限公司</span>
         <el-dropdown style="float:right">
           <span class="el-dropdown-link">
@@ -62,12 +64,26 @@
           </el-dropdown-menu>
         </el-dropdown>
       </el-header>
-      <el-main>Main</el-main>
+      <el-main>
+        <!-- 显示二级路由对用的组件 -->
+        <router-view></router-view>
+      </el-main>
     </el-container>
   </el-container>
 </template>
 <script>
-export default {}
+export default {
+  data () {
+    return {
+      collapse: false
+    }
+  },
+  methods: {
+    toggleMenu () {
+      this.collapse = !this.collapse
+    }
+  }
+}
 </script>
 <style scoped lang='less'>
 .home-container {
@@ -83,6 +99,10 @@ export default {}
       height: 60px;
       background: #002840 url(../../assets/images/logo_admin.png) no-repeat
         center / 140px auto;
+    }
+    .close{
+        background-image: url(../../assets/images/logo_admin_01.png);
+        background-size: 40px auto;
     }
   }
   .my-header {
