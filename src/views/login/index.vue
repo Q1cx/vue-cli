@@ -38,8 +38,8 @@ export default {
     return {
       // 对应表单数据
       loginForm: {
-        mobile: '',
-        code: ''
+        mobile: '15050260275',
+        code: '246810'
       },
       // 表单校验规则对象
       loginRules: {
@@ -74,6 +74,9 @@ export default {
               // 登录后要做的事情
               // 1、跳转到首页
               // 2、保持登录状态
+              // a.保存登录后返回的用户信息，包含token
+              // b。使用sessionStorage 来存储 关闭浏览器的会话事项
+              window.sessionStorage.setItem('hm73-tt', JSON.stringify(res.data.data))
               this.$router.push('/')
             })
             .catch(err => {
