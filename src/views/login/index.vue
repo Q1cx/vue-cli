@@ -39,7 +39,7 @@ export default {
     return {
       // 对应表单数据
       loginForm: {
-        mobile: '15050260275',
+        mobile: '13911111111',
         code: '246810'
       },
       // 表单校验规则对象
