@@ -34,9 +34,9 @@ router.beforeEach((to, from, next) => {
 //     next('/login')
 //   }
 
-// 间歇
+  // 间歇
   const user = window.sessionStorage.getItem('hm73-tt')
-  if (to.path !== '/login' && !user) return next('/login')
+  if (to.path != '/login' && !user) return next('/login')
   next()
 })
 export default router

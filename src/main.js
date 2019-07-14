@@ -9,7 +9,7 @@ import 'element-ui/lib/theme-chalk/index.css'
 // 默认会去加载索引文件  index.js/index.vue/index.json
 // 在vue-cli创建的项目中 @前缀代表的是根路径  src目录
 import router from '@/router'
-import axios from 'axios'
+import axios from '@/api/axios'
 Vue.prototype.axios = axios
 
 // 在全局范围内注册组件 (注册element-ui组件库)
