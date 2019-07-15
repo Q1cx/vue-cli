@@ -28,6 +28,8 @@
         </el-form-item>
         <el-form-item label="时间：">
           <el-date-picker
+            value-format="yyyy-MM-dd"
+            @change='changeDate'
             v-model="dataValues"
             type="daterange"
             range-separator="至"
@@ -36,15 +38,15 @@
           ></el-date-picker>
         </el-form-item>
         <el-form-item>
-          <el-button type="danger">筛选</el-button>
+          <el-button type="danger" @click="search()">筛选</el-button>
         </el-form-item>
       </el-form>
     </el-card>
     <!-- 结果容器 -->
     <el-card>
+
       <div slot="header">
-        根据筛选条件宫查询到
-        <strong>0</strong>条结果:
+        根据筛选条件宫查询到<strong>0</strong>条结果:
       </div>
 
       <el-table :data="articles">
@@ -72,7 +74,7 @@
 
         <el-table-column label="发布时间" prop="pubdate"></el-table-column>
 
-        <el-table-column label="操作">
+        <el-table-column label="操作" width="160px">
           <template slot-scope="scope">
             <el-button icon="el-icon-edit" plain circle type="primary"></el-button>
             <el-button icon="el-icon-delete" plain circle type="danger"></el-button>
@@ -111,10 +113,18 @@ export default {
   created () {
     // 获取频道数据
     this.getChannelOptions()
+    // 获取列表数据
     this.getArticles()
   },
-  // 获取列表数据
   methods: {
+    search () {
+      this.getArticles()
+    },
+    changeDate (values) {
+    // 给begin    end 赋值 即可
+      this.reqParams.begin_pubdate = values[0]
+      this.reqParams.end_pubdate = values[1]
+    },
     async getChannelOptions () {
       // const o ={data:{}}: const {data} = o;一层解构  对象的结构一层
       // const o ={data:{data:{channels:[]}}}; 多层结构   const  {data:{data:data}}
