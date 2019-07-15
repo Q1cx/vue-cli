@@ -3,7 +3,7 @@ import MyBread from '@/components/my-bread.vue'
 export default {
   install (Vue) {
     // 注册所有组件在vue下
-    Vue.component(MyBread.name,MyBread)
-        // 多个组件在下面挨个注册即可
+    Vue.component(MyBread.name, MyBread)
+    // 多个组件在下面挨个注册即可
   }
 }

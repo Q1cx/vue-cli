@@ -41,12 +41,28 @@
       </el-form>
     </el-card>
     <!-- 结果容器 -->
-    <el-card></el-card>
+    <el-card>
+      <div slot="header">
+        根据筛选条件宫查询到
+        <strong>0</strong>条结果:
+      </div>
+      <el-table :data="articles">
+        <el-table-column label="封面">
+          
+        </el-table-column>
+        <el-table-column label="标题"></el-table-column>
+        <el-table-column label="状态"></el-table-column>
+        <el-table-column label="发布时间"></el-table-column>
+        <el-table-column label="操作"></el-table-column>
+      </el-table>
+      <div class="box">
+        <el-pagination background layout="prev, pager, next" :total="1000"></el-pagination>
+      </div>
+    </el-card>
   </div>
 </template>
 
 <script>
-
 export default {
   data () {
     return {
@@ -58,12 +74,27 @@ export default {
         channel_id: null,
         begin_pubdate: null,
         end_pubdate: null
-
       },
       // 默认频道数据
-      channelOptions: [{ name: 'java', id: 1 }],
+      channelOptions: [{ name: 'Java', id: 1 }],
       // 日期控件的数据
-      dataValues: []
+      dataValues: [],
+      // 文章列表
+      articles: []
+    }
+  },
+  created () {
+    // 获取频道数据
+    this.getChannelOptions()
+  },
+  methods: {
+    async getChannelOptions () {
+      // const o ={data:{}}: const {data} = o;一层解构  对象的结构一层
+      // const o ={data:{data:{channels:[]}}}; 多层结构   const  {data:{data:data}}
+      const {
+        data: { data }
+      } = await this.axios.get('channels')
+      this.channelOptions = data.channels
     }
   }
 }
@@ -73,5 +104,9 @@ export default {
 //  .el-card 是组件  解析后标签的名字不是el-card,标签上雷鸣和自定义标签名字是一样的
 .el-card {
   margin-bottom: 20px;
+}
+.box{
+  margin-top: 20px;
+  text-align: center;
 }
 </style>
