@@ -29,7 +29,7 @@
         <el-form-item label="时间：">
           <el-date-picker
             value-format="yyyy-MM-dd"
-            @change='changeDate'
+            @change="changeDate"
             v-model="dataValues"
             type="daterange"
             range-separator="至"
@@ -44,9 +44,9 @@
     </el-card>
     <!-- 结果容器 -->
     <el-card>
-
       <div slot="header">
-        根据筛选条件宫查询到<strong>0</strong>条结果:
+        根据筛选条件共查询到
+        <strong>{{total}}</strong>条结果:
       </div>
 
       <el-table :data="articles">
@@ -80,11 +80,19 @@
             <el-button icon="el-icon-delete" plain circle type="danger"></el-button>
           </template>
         </el-table-column>
-
       </el-table>
+
       <div class="box">
-        <el-pagination background layout="prev, pager, next" :total="1000"></el-pagination>
+        <el-pagination
+          background
+          layout="prev, pager, next"
+          @current-change="changePafger"
+          :current-page="reqParams.page"
+          :page-size="reqParams.per_page"
+          :total="total"
+        ></el-pagination>
       </div>
+
     </el-card>
   </div>
 </template>
@@ -97,6 +105,8 @@ export default {
       // 数据默认是'空'还是null的区别
       // 空 数据会发给后台，   null  不会发字段给后台
       reqParams: {
+        page: 1,
+        per_page: 20,
         status: null,
         channel_id: null,
         begin_pubdate: null,
@@ -107,7 +117,9 @@ export default {
       // 日期控件的数据
       dataValues: [],
       // 文章列表
-      articles: []
+      articles: [],
+      // 总条数
+      total: 0
     }
   },
   created () {
@@ -117,11 +129,19 @@ export default {
     this.getArticles()
   },
   methods: {
+    changePafger (newPager) {
+      // newPager 当前点击的按钮的页码
+      // 更新提交给后台的参数
+      this.reqParams.page = newPager
+      // 获取列表数据
+      this.getArticles()
+    },
     search () {
+      this.reqParams.page = 1
       this.getArticles()
     },
     changeDate (values) {
-    // 给begin    end 赋值 即可
+      // 给begin    end 赋值 即可
       this.reqParams.begin_pubdate = values[0]
       this.reqParams.end_pubdate = values[1]
     },
@@ -140,6 +160,7 @@ export default {
         data: { data }
       } = await this.axios.get('articles', { params: this.reqParams })
       this.articles = data.results
+      this.total = data.total_count
     }
   }
 }
