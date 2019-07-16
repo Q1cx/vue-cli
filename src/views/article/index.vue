@@ -1,5 +1,7 @@
 <template>
   <div class="container">
+    <my-channel @input="fn"></my-channel>
+    {{testData}}
     <!-- 筛选 -->
     <el-card>
       <div slot="header">
@@ -100,6 +102,7 @@
 export default {
   data () {
     return {
+      testData: '',
       // 提交给后台的条件， 传参
       // 数据默认是'空'还是null的区别
       // 空 数据会发给后台，   null  不会发字段给后台
@@ -128,6 +131,10 @@ export default {
     this.getArticles()
   },
   methods: {
+    fn (data) {
+      console.log('fn')
+      this.testData = data
+    },
     edit (id) {
       this.$router.push('/publish?id=' + id)
       // this.$router.push({ path: 'publish' , query: { id } })
