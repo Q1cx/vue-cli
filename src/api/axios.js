@@ -10,9 +10,13 @@ const instance = axios.create({
   //     // token认证需要的字段   值 ：要加上前缀Bearer
   //     Authorization: 'Bearer ' + JSON.parse(window.sessionStorage.getItem('hm73-tt')).token
   //   }
+
   transformResponse: [(data) => {
   // 处理格式
-    return JSONBig.parse(data)
+    if (data) {
+      return JSONBig.parse(data)
+    }
+    return data
   }]
 })
 // 添加请求拦截器
@@ -41,7 +45,7 @@ instance.interceptors.response.use(response => {
   // 错的时候做自己的事情
   // 如果相应的状态是401 拦截到登陆页面
   // error.response.status 状态码
-  if (error.response.status === 401) {
+  if (error.response && error.response.status === 401) {
     // hash 是location提供获取操作 地址栏的#后的地址的属性
     location.hash = '#/login'
   }

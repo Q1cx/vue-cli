@@ -63,7 +63,7 @@
         <el-table-column label="标题" prop="title"></el-table-column>
         <el-table-column label="状态" prop="status">
           <template slot-scope="scope">
-            {{scope.row.id}}
+            <!-- {{scope.row.id}} -->
             <el-tag v-if="scope.row.status===0" type="info">草稿</el-tag>
             <el-tag v-if="scope.row.status===1">待审核</el-tag>
             <el-tag v-if="scope.row.status===2" type="success">审核通过</el-tag>
@@ -76,8 +76,8 @@
 
         <el-table-column label="操作" width="160px">
           <template slot-scope="scope">
-            <el-button icon="el-icon-edit" plain circle type="primary"></el-button>
-            <el-button icon="el-icon-delete" plain circle type="danger"></el-button>
+            <el-button icon="el-icon-edit" plain circle type="primary" @click="edit(scope.row.id)"></el-button>
+            <el-button icon="el-icon-delete" plain circle type="danger" @click="del(scope.row.id)"></el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -92,7 +92,6 @@
           :total="total"
         ></el-pagination>
       </div>
-
     </el-card>
   </div>
 </template>
@@ -129,6 +128,29 @@ export default {
     this.getArticles()
   },
   methods: {
+    edit (id) {
+      this.$router.push('/publish?id=' + id)
+      // this.$router.push({ path: 'publish' , query: { id } })
+    },
+    del (id) {
+      // 确认框
+      this.$confirm('哈喽，此操作将永久删除该文章, 是否继续?', '温馨提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      })
+        .then(async () => {
+          //  点击确认的时候  发删除请求
+          await this.axios.delete(`articles/${id}`)
+          // 删除成功后做什么
+          this.getArticles()
+          this.$message.success('删除成功')
+        })
+        .catch(() => {
+        // 点击取消的时候
+
+        })
+    },
     changePafger (newPager) {
       // newPager 当前点击的按钮的页码
       // 更新提交给后台的参数

@@ -94,7 +94,7 @@ export default {
             const res = await this.axios.post('authorizations', this.loginForm)
             window.sessionStorage.setItem('hm73-tt', JSON.stringify(res.data.data))
             this.$router.push('/')
-          }catch (err) {
+          } catch (err) {
             //  错误提示  消息组件提示
             this.$message.error('用户名或密码错误')
           }
