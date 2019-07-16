@@ -1,13 +1,19 @@
 // 封装axios
 import axios from 'axios'
+import JSONBig from 'json-bigint'
+
 // 创建一个axios对象使用{}的配置项
 const instance = axios.create({
-  baseURL: 'http://ttapi.research.itcast.cn/mp/v1_0/'
+  baseURL: 'http://ttapi.research.itcast.cn/mp/v1_0/',
   // 请求头
-//   headers: {
-//     // token认证需要的字段   值 ：要加上前缀Bearer
-//     Authorization: 'Bearer ' + JSON.parse(window.sessionStorage.getItem('hm73-tt')).token
-//   }
+  //   headers: {
+  //     // token认证需要的字段   值 ：要加上前缀Bearer
+  //     Authorization: 'Bearer ' + JSON.parse(window.sessionStorage.getItem('hm73-tt')).token
+  //   }
+  transformResponse: [(data) => {
+  // 处理格式
+    return JSONBig.parse(data)
+  }]
 })
 // 添加请求拦截器
 instance.interceptors.request.use(config => {

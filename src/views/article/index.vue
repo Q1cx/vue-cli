@@ -9,11 +9,11 @@
       <el-form :model="reqParams" size="small" label-width="80px">
         <el-form-item label="状态：">
           <el-radio-group v-model="reqParams.status">
-            <el-radio :label="null">全部</el-radio>
-            <el-radio :label="0">草稿</el-radio>
-            <el-radio :label="1">待审核</el-radio>
-            <el-radio :label="2">审核通过</el-radio>
-            <el-radio :label="3">审核失败</el-radio>
+            <el-radio :label="null">草稿</el-radio>
+            <el-radio :label="0">待审核</el-radio>
+            <el-radio :label="1">审核通过</el-radio>
+            <el-radio :label="2">审核失败</el-radio>
+            <el-radio :label="3">已删除</el-radio>
           </el-radio-group>
         </el-form-item>
         <el-form-item label="频道：">
@@ -61,9 +61,9 @@
         </el-table-column>
 
         <el-table-column label="标题" prop="title"></el-table-column>
-
         <el-table-column label="状态" prop="status">
           <template slot-scope="scope">
+            {{scope.row.id}}
             <el-tag v-if="scope.row.status===0" type="info">草稿</el-tag>
             <el-tag v-if="scope.row.status===1">待审核</el-tag>
             <el-tag v-if="scope.row.status===2" type="success">审核通过</el-tag>
