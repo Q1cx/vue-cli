@@ -1,7 +1,5 @@
 <template>
   <div class="container">
-    <my-channel @input="fn"></my-channel>
-    {{testData}}
     <!-- 筛选 -->
     <el-card>
       <div slot="header">
@@ -11,22 +9,16 @@
       <el-form :model="reqParams" size="small" label-width="80px">
         <el-form-item label="状态：">
           <el-radio-group v-model="reqParams.status">
-            <el-radio :label="null">草稿</el-radio>
-            <el-radio :label="0">待审核</el-radio>
-            <el-radio :label="1">审核通过</el-radio>
-            <el-radio :label="2">审核失败</el-radio>
-            <el-radio :label="3">已删除</el-radio>
+            <el-radio :label="null">全部</el-radio>
+            <el-radio :label="0">草稿</el-radio>
+            <el-radio :label="1">待审核</el-radio>
+            <el-radio :label="2">审核通过</el-radio>
+            <el-radio :label="3">审核失败</el-radio>
           </el-radio-group>
         </el-form-item>
         <el-form-item label="频道：">
-          <el-select v-model="reqParams.channel_id">
-            <el-option
-              v-for="item in channelOptions"
-              :key="item.id"
-              :ladel="item.name"
-              :value="item.id"
-            ></el-option>
-          </el-select>
+          <!--v-model  :value  @input -->
+          <my-channel v-model="reqParams.channel_id"></my-channel>
         </el-form-item>
         <el-form-item label="时间：">
           <el-date-picker
@@ -102,7 +94,6 @@
 export default {
   data () {
     return {
-      testData: '',
       // 提交给后台的条件， 传参
       // 数据默认是'空'还是null的区别
       // 空 数据会发给后台，   null  不会发字段给后台
@@ -114,8 +105,6 @@ export default {
         begin_pubdate: null,
         end_pubdate: null
       },
-      // 默认频道数据
-      channelOptions: [{ name: 'Java', id: 1 }],
       // 日期控件的数据
       dataValues: [],
       // 文章列表
@@ -125,16 +114,10 @@ export default {
     }
   },
   created () {
-    // 获取频道数据
-    this.getChannelOptions()
     // 获取列表数据
     this.getArticles()
   },
   methods: {
-    fn (data) {
-      console.log('fn')
-      this.testData = data
-    },
     edit (id) {
       this.$router.push('/publish?id=' + id)
       // this.$router.push({ path: 'publish' , query: { id } })
@@ -173,14 +156,6 @@ export default {
       // 给begin    end 赋值 即可
       this.reqParams.begin_pubdate = values[0]
       this.reqParams.end_pubdate = values[1]
-    },
-    async getChannelOptions () {
-      // const o ={data:{}}: const {data} = o;一层解构  对象的结构一层
-      // const o ={data:{data:{channels:[]}}}; 多层结构   const  {data:{data:data}}
-      const {
-        data: { data }
-      } = await this.axios.get('channels')
-      this.channelOptions = data.channels
     },
     async getArticles () {
       // post 参数  axios.post('url',(参数对象))
