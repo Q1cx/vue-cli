@@ -18,7 +18,7 @@ export default {
   },
   methods: {
     fn (value) {
-      this.$emit('input',value)
+      this.$emit('input', value)
     },
     async getData () {
       const {
