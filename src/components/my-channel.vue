@@ -1,6 +1,6 @@
 <template>
   <el-select :value="value" @change="fn">
-    <el-option v-for="item in channelOptions" :key="item.id" :ladel="item.name" :value="item.id"></el-option>
+    <el-option v-for="item in channelOptions" :key="item.id" :label="item.name" :value="item.id"></el-option>
   </el-select>
 </template>
 <script>
