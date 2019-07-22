@@ -8,6 +8,9 @@ import NodFound from '@/views/404'
 import Article from '@/views/article'
 import Image from '@/views/image'
 import Publish from '@/views/publish'
+import Comment from '@/views/comment'
+import Setting from '@/views/setting'
+import Fans from '@/views/fans'
 
 Vue.use(VueRouter)
 const router = new VueRouter({
@@ -20,7 +23,11 @@ const router = new VueRouter({
         { path: '/', name: 'welcome', component: Welcome },
         { path: '/article', name: 'article', component: Article },
         { path: '/image', name: 'image', component: Image },
-        { path: '/publish', name: 'publish', component: Publish }
+        { path: '/publish', name: 'publish', component: Publish },
+        { path: '/comment', name: 'comment', component: Comment },
+        { path: '/setting', name: 'setting', component: Setting },
+        { path: '/fans', name: 'fans', component: Fans }
+
       ] },
     // 路径走到这个位置，证明没有任何程序去处理这个路径
     { path: '*', name: '404', component: NodFound }

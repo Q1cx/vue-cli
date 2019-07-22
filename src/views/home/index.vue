@@ -36,7 +36,7 @@
           <i class="el-icon-present"></i>
           <span slot="title">粉丝管理</span>
         </el-menu-item>
-        <el-menu-item index="setting">
+        <el-menu-item index="/setting">
           <i class="el-icon-setting"></i>
           <span slot="title">个人设置</span>
         </el-menu-item>
@@ -73,6 +73,7 @@
   </el-container>
 </template>
 <script>
+import eventBus from '@/eventBus'
 export default {
   data () {
     return {
@@ -85,6 +86,14 @@ export default {
     const user = JSON.parse(window.sessionStorage.getItem('hm73-tt'))
     this.name = user.name
     this.avatar = user.photo
+    // 绑定事件
+    eventBus.$on('updateHeaderName', (name) => {
+      this.name = name
+    })
+    // 绑定事件
+    eventBus.$on('updateHeaderPhoto', (photo) => {
+      this.avatar = photo
+    })
   },
   methods: {
     toggleMenu () {
